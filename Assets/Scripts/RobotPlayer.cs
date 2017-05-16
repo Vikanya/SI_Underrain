@@ -11,6 +11,11 @@ public class RobotPlayer : MonoBehaviour {
 	List<string> skillList = new List<string>();
 	bool ready = true;
 
+	Vector3 moveDir;
+	float moveDist;
+	float moveAmount;
+	public float speed = 15f;
+	float totalMoved;
 	void Start(){
 		waypoints.Add (transform.position);
 		foreach (Transform child in waypointParent) {
@@ -29,9 +34,6 @@ public class RobotPlayer : MonoBehaviour {
 		Move ();
 
 	}
-	float moveAmount;
-	float speed = 15f;
-	float totalMoved;
 	void Move(){
 	//	if (waypointIndex != 0 && waypointIndex < waypoints.Count) {
 			//transform.position = Vector3.Lerp (waypoints [waypointIndex - 1], waypoints [waypointIndex], 1 / (moveDist*1000f));
@@ -53,7 +55,7 @@ public class RobotPlayer : MonoBehaviour {
 	}
 
 	public void NextSkill(){
-		if (!ready)
+		if (!ready || skillList.Count == 0)
 			return;
 		ExecuteSkill (skillList [0]);
 		skillList.RemoveAt (0);
@@ -81,9 +83,10 @@ public class RobotPlayer : MonoBehaviour {
 
 	}
 
-	Vector3 moveDir;
-	float moveDist;
 	void TriggerMove(){
+		if (waypoints.Count <= waypointIndex-1)
+			return;
+
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;

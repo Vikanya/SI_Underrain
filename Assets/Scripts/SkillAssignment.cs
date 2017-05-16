@@ -15,7 +15,7 @@ public class SkillAssignment : MonoBehaviour {
 	string currentSkill;
 
 	public void SetCurrentSkill(string skill){
-		Debug.Log ("ui pressed : " + skill);
+		//Debug.Log ("ui pressed : " + skill);
 		currentSkill = skill;
 	}
 
@@ -42,10 +42,10 @@ public class SkillAssignment : MonoBehaviour {
 
 		if (Input.GetButtonUp ("Fire1")) {
 			if (currentSkill != null){
-				Debug.Log ("fired released");
+				//Debug.Log ("fired released");
 				rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast(rayToMousePoint, out hit, float.MaxValue, layerRobot)){
-					Debug.Log ("on robot " + hit.transform.name);
+					//Debug.Log ("on robot " + hit.transform.name);
 					hit.transform.GetComponent<RobotPlayer> ().AssignSkill (currentSkill);
 				}
 				currentSkill = null;
