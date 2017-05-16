@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ActionButton : MonoBehaviour {
 	
 	public void OnPointerDown (PointerEventData eventData) 
 	{
-		Debug.Log ("mouse down");
+		//Debug.Log ("mouse down");
 		SkillAssignment.instance.SetCurrentSkill (name);
 	}
 }
