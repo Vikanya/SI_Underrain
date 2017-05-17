@@ -46,6 +46,7 @@ public class SkillAssignment : MonoBehaviour {
 				if (Physics.Raycast(rayToMousePoint, out hit, float.MaxValue, layerRobot)){
 					//Debug.Log ("on robot " + hit.transform.name);
 					hit.transform.GetComponent<RobotPlayer> ().AssignSkill (currentSkill);
+					GameManager.instance.ConsumeCard (currentSkill);
 				}
 				currentSkill = null;
 			}
