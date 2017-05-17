@@ -34,22 +34,33 @@ public class RobotSkillDisplay : MonoBehaviour {
 
 
 	public void ManageDisplays(int amountAdded){
-		
-		activeDisplays += amountAdded;
-		activeDisplays = Mathf.Clamp (activeDisplays, 0, quads.Length + 2);
 
-		if (quads [activeDisplays - 1].gameObject.activeInHierarchy) {
-			quads [activeDisplays - 1].gameObject.SetActive (false);
+
+
+		if (amountAdded > 0) {
+			if (activeDisplays + amountAdded > quads.Length) {
+				return;
+			}
+
+			quads [activeDisplays].gameObject.SetActive (true);
+			activeDisplays += amountAdded;
+			activeDisplays = Mathf.Clamp (activeDisplays, 0, quads.Length);
 		} else {
-			quads [activeDisplays - 1].gameObject.SetActive (true);
+			if (activeDisplays + amountAdded < 0) {
+				return;
+			}
+			activeDisplays += amountAdded;
+			quads [activeDisplays].gameObject.SetActive (false);
+
 		}
 
-
 		float totalWidth = activeDisplays * quadWidth + tinySpace * (activeDisplays - 1);
+		totalWidth = Mathf.Clamp (totalWidth, 0, totalWidth);
 
 		for (int i = 0; i < activeDisplays; i++) {
 			//quads [i].transform.position = new Vector3 (transform.position.x - (totalWidth * .5f) + i * (quadWidth + tinySpace), transform.position.y, transform.position.z);
-			quads[i].transform.position = new Vector3(transform.position.x - (tinySpace + quadWidth) * .5f +i * quadWidth * .5f + tinySpace * (i-1), transform.position.y, transform.position.z);
+			//quads[i].transform.position = new Vector3(transform.position.x - (tinySpace + quadWidth) * .5f +i * quadWidth * .5f + tinySpace * (i-1), transform.position.y, transform.position.z);
+			quads[i].transform.position = new Vector3(transform.position.x - totalWidth * .5f + quadWidth * .5f + (i-1) * (quadWidth * .5f + tinySpace * .5f), transform.position.y, transform.position.z);	
 		}
 	}
 }
