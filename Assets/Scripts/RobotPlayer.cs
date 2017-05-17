@@ -101,8 +101,11 @@ public class RobotPlayer : MonoBehaviour {
 	void Distract(){
 	}
 	public void NextSkill(){
-		if (!skillList [0].Equals ("Hide") && !skillList [0].Equals ("Distract") && !skillList [0].Equals ("Mine")) {
-			if (!ready || skillList.Count == 0) 
+		if (skillList.Count == 0){
+			Debug.Log ("list = 0");
+			return;
+		}
+		if (!ready && !skillList [0].Equals ("Hide") && !skillList [0].Equals ("Distract") && !skillList [0].Equals ("Mine")) { 
 				return;
 		}
 		if (ExecuteSkill (skillList [0])){
@@ -117,10 +120,8 @@ public class RobotPlayer : MonoBehaviour {
 			break;
 		case "Move":
 			if (CheckMove ()) {
-				Debug.Log ("GAGAG");
 				TriggerMove ();
 			} else {
-				Debug.Log ("GIGIG");
 				return false;
 			}
 			break;
@@ -137,7 +138,11 @@ public class RobotPlayer : MonoBehaviour {
 			TriggerMine();
 			break;
 		case "Back":
-			TriggerBack();
+			if (CheckBack()){
+				TriggerBack();
+			}else {
+				return false;
+			}
 			break;
 		default:
 			ready = true;
@@ -148,7 +153,19 @@ public class RobotPlayer : MonoBehaviour {
 
 
 	bool CheckMove(){
+		if (waypointIndex >= waypoints.Count-1)
+			return true;
+		
 		Vector3 checkDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
+		float checkDist = checkDir.magnitude;
+		checkDir = checkDir.normalized;
+		return !Physics.Raycast (transform.position, checkDir, checkDist, layerObstacle);
+	}
+	bool CheckBack(){
+		if (waypointIndex <= 0)
+			return false;
+		
+		Vector3 checkDir = (waypoints [waypointIndex - 1] - waypoints [waypointIndex]);
 		float checkDist = checkDir.magnitude;
 		checkDir = checkDir.normalized;
 		return !Physics.Raycast (transform.position, checkDir, checkDist, layerObstacle);
@@ -158,9 +175,9 @@ public class RobotPlayer : MonoBehaviour {
 	}
 
 	void TriggerMove(){
-		if (waypoints.Count <= waypointIndex-1)
+		if (waypointIndex >= waypoints.Count - 1)
 			return;
-
+		
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -193,11 +210,19 @@ public class RobotPlayer : MonoBehaviour {
 		for (int a = 0; a < enemiesInRange.Length; a++) {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}
-		Debug.Log ("distractiong");
 	}
 	void TriggerMine(){
 		Instantiate (prefabMine, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
 	}
 	void TriggerBack(){
+		if (waypointIndex <= 0)
+			return;
+
+		Debug.Log (waypointIndex);
+		totalMoved = 0;
+		moveDir = (waypoints [waypointIndex - 1] - waypoints [waypointIndex]);
+		moveDist = moveDir.magnitude;
+		moveDir = moveDir.normalized;
+		waypointIndex--;
 	}
 }

@@ -46,6 +46,8 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 	
 	void Update () {
+		if (!GameManager.instance.actionPhase)
+			return;
 		if (!isPlayerDetected) {
 			if (!distracted) {
 				Move ();
