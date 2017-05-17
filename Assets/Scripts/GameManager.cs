@@ -24,8 +24,11 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetButtonDown("Robot3")){
 			robot3.NextSkill();
 		}
+	}
 
-
+	public void GameOver(){
+		Debug.Log ("GAMEOVER");
+		Time.timeScale = 0f;
 	}
 
 }

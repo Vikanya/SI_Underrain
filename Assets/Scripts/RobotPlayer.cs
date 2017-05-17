@@ -16,6 +16,7 @@ public class RobotPlayer : MonoBehaviour {
 	float moveAmount;
 	public float speed = 15f;
 	float totalMoved;
+
 	void Start(){
 		waypoints.Add (transform.position);
 		foreach (Transform child in waypointParent) {
@@ -35,9 +36,6 @@ public class RobotPlayer : MonoBehaviour {
 
 	}
 	void Move(){
-	//	if (waypointIndex != 0 && waypointIndex < waypoints.Count) {
-			//transform.position = Vector3.Lerp (waypoints [waypointIndex - 1], waypoints [waypointIndex], 1 / (moveDist*1000f));
-
 			if (totalMoved - moveDist < 0) {
 
 				moveAmount = Time.deltaTime * speed;
@@ -45,13 +43,7 @@ public class RobotPlayer : MonoBehaviour {
 				transform.Translate (moveDir * moveAmount, Space.World);
 			} else {
 				ready = true;
-
-				
 			}
-	
-		//}
-
-
 	}
 
 	public void NextSkill(){
