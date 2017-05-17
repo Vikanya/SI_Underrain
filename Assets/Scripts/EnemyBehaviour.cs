@@ -149,6 +149,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	public void Shot(){
 		Debug.Log ("I AM DEAD");
+		gameObject.SetActive (false);
 	}
 }
 
