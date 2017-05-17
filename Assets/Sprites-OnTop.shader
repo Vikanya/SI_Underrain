@@ -17,7 +17,7 @@ Shader "Sprites/OnTop"
 	{
 		Tags
 		{ 
-			"Queue"="Transparent" 
+			"Queue"="Overlay" 
 			"IgnoreProjector"="True" 
 			"RenderType"="Transparent" 
 			"PreviewType"="Plane"
@@ -26,7 +26,8 @@ Shader "Sprites/OnTop"
 
 		Cull Off
 		Lighting Off
-		ZWrite On
+		ZTest Always
+		ZWrite Off
 		Blend One OneMinusSrcAlpha
 
 		Pass
