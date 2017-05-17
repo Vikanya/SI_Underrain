@@ -124,5 +124,9 @@ public class EnemyBehaviour : MonoBehaviour {
 		totalMoved = 0;
 		waypointIndex++;
 	}
+
+	public void Shot(){
+		Debug.Log ("I AM DEAD");
+	}
 }
 

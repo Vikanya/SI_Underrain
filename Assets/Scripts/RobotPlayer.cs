@@ -15,7 +15,12 @@ public class RobotPlayer : MonoBehaviour {
 	float moveDist;
 	float moveAmount;
 	public float speed = 15f;
+	public float attackRange = 10f;
 	float totalMoved;
+
+	GameObject currTarget;
+
+	public LayerMask layerShootable;
 
 	void Start(){
 		waypoints.Add (transform.position);
@@ -45,7 +50,26 @@ public class RobotPlayer : MonoBehaviour {
 				ready = true;
 			}
 	}
+	void Attack(){
+		currTarget = null;
+		Collider[] shootablesInRange = Physics.OverlapSphere (transform.position, attackRange, layerShootable);
+		float minSqrDist = float.MaxValue;
 
+		for (int i = 0; i < shootablesInRange.Length; i++) {
+			if (minSqrDist > (shootablesInRange [i].transform.position - transform.position).sqrMagnitude){
+				minSqrDist = (shootablesInRange [i].transform.position - transform.position).sqrMagnitude;
+				currTarget = shootablesInRange [i].gameObject;
+			}
+		}
+		if (currTarget) {
+			try {
+				currTarget.GetComponent<EnemyBehaviour> ().Shot ();
+			} catch (System.Exception ex) {
+				currTarget.GetComponent<Shootable> ().Shot ();
+			}
+		}
+
+	}
 	public void NextSkill(){
 		if (!ready || skillList.Count == 0)
 			return;
@@ -72,7 +96,7 @@ public class RobotPlayer : MonoBehaviour {
 	}
 
 	void TriggerAttack(){
-
+		Attack ();
 	}
 
 	void TriggerMove(){
