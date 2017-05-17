@@ -13,8 +13,8 @@ public class SkillAssignment : MonoBehaviour {
 
 	string currentSkill;
 
+
 	public void SetCurrentSkill(string skill){
-		//Debug.Log ("ui pressed : " + skill);
 		currentSkill = skill;
 	}
 
@@ -46,6 +46,7 @@ public class SkillAssignment : MonoBehaviour {
 				if (Physics.Raycast(rayToMousePoint, out hit, float.MaxValue, layerRobot)){
 					//Debug.Log ("on robot " + hit.transform.name);
 					hit.transform.GetComponent<RobotPlayer> ().AssignSkill (currentSkill);
+					hit.transform.GetComponentInChildren<RobotSkillDisplay> ().ManageDisplays (1, currentSkill);
 					GameManager.instance.ConsumeCard (currentSkill);
 				}
 				currentSkill = null;
