@@ -24,9 +24,14 @@ public class EnemyBehaviour : MonoBehaviour {
 	Vector3 moveDir;
 	float moveDist;
 
+	bool distracted;
+	public float distractionTime = 3f;
+	float distractionTimer;
+
 	Vector3 tmpV3;
 	bool gameOver;
 
+	public LayerMask layerVision;
 	RaycastHit hit;
 
 	RobotPlayer[] robots = new RobotPlayer[3];
@@ -42,7 +47,11 @@ public class EnemyBehaviour : MonoBehaviour {
 	
 	void Update () {
 		if (!isPlayerDetected) {
-			Move ();
+			if (!distracted) {
+				Move ();
+			} else {
+				BeDistracted ();
+			}
 			PlayerWatch ();
 		} else {
 			DetectedPlayer ();
@@ -76,7 +85,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		tmpV3 = robot.transform.position - transform.position;
 		if (tmpV3.sqrMagnitude < visionLength*visionLength){
 			if (Vector3.Dot(transform.forward, tmpV3.normalized) > visionDotProduct){
-				if (Physics.Raycast(transform.position, tmpV3, out hit, tmpV3.magnitude)){
+				if (Physics.Raycast(transform.position, tmpV3, out hit, tmpV3.magnitude, layerVision)){
 					if (hit.transform.gameObject.Equals (robot.gameObject)) {
 						return true;
 					}
@@ -96,6 +105,12 @@ public class EnemyBehaviour : MonoBehaviour {
 		transform.LookAt (playerDetected.transform);
 		if (!SinglePlayerWatch(playerDetected)){
 			isPlayerDetected = false;
+		}
+	}
+	void BeDistracted(){
+		distractionTimer -= Time.deltaTime;
+		if (distractionTimer <= 0){
+			distracted = false;
 		}
 	}
 
@@ -123,6 +138,17 @@ public class EnemyBehaviour : MonoBehaviour {
 		moveDir = moveDir.normalized;
 		totalMoved = 0;
 		waypointIndex++;
+	}
+
+	public void GetDistracted(Vector3 distractionOrigin){
+		distracted = true;
+		transform.LookAt (distractionOrigin);
+		distractionTimer = distractionTime;
+		Debug.Log ("i ma distractend");
+	}
+
+	public void Shot(){
+		Debug.Log ("I AM DEAD");
 	}
 }
 
