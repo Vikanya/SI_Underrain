@@ -18,6 +18,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	[Tooltip("Si égal à 0, ennemi a un cône de vision à 180°, si égal à 1 vision à 0°")]
 	public float visionDotProduct = .3f;
 	public float detectionDelay = 2f;
+	public bool staticEnemy;
 	float detectionTimer;
 	float totalMoved;
 	float timerWait;
@@ -30,6 +31,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	Vector3 tmpV3;
 	bool gameOver;
+	public bool target;
 
 	public LayerMask layerVision;
 	RaycastHit hit;
@@ -59,6 +61,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Move(){
+
+		if (staticEnemy)
+			return;
+
 		if (totalMoved - moveDist < 0) {
 
 			moveAmount = Time.deltaTime * speed;
@@ -72,12 +78,14 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 	void PlayerWatch(){
-		for (int i = 0; i < robots.Length; i++) {
-			if (SinglePlayerWatch (robots [i])) {
-				Debug.Log ("DETRCTERD");
-				isPlayerDetected = true;
-				playerDetected = robots [i];
-				detectionTimer = detectionDelay;
+		if (!GameManager.instance.actionPhase) {
+			for (int i = 0; i < robots.Length; i++) {
+				if (SinglePlayerWatch (robots [i])) {
+					//Debug.Log ("DETRCTERD");
+					isPlayerDetected = true;
+					playerDetected = robots [i];
+					detectionTimer = detectionDelay;
+				}
 			}
 		}
 	}
@@ -149,6 +157,8 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	public void Shot(){
 		Debug.Log ("I AM DEAD");
+		if (target)
+			GameManager.instance.Victory ();
 		gameObject.SetActive (false);
 	}
 }

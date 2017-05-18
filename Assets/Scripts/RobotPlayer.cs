@@ -94,7 +94,8 @@ public class RobotPlayer : MonoBehaviour {
 		float minSqrDist = float.MaxValue;
 
 		for (int i = 0; i < shootablesInRange.Length; i++) {
-			if (minSqrDist > (shootablesInRange [i].transform.position - transform.position).sqrMagnitude){
+			if (minSqrDist > (shootablesInRange [i].transform.position - transform.position).sqrMagnitude 
+				&& !Physics.Raycast(transform.position, shootablesInRange [i].transform.position - transform.position, (shootablesInRange [i].transform.position - transform.position).magnitude, layerObstacle)){
 				minSqrDist = (shootablesInRange [i].transform.position - transform.position).sqrMagnitude;
 				currTarget = shootablesInRange [i].gameObject;
 			}
@@ -197,7 +198,6 @@ public class RobotPlayer : MonoBehaviour {
 	void TriggerMove(){
 		if (waypointIndex >= waypoints.Count - 1)
 			return;
-		
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -244,5 +244,16 @@ public class RobotPlayer : MonoBehaviour {
 		moveDist = moveDir.magnitude;
 		moveDir = moveDir.normalized;
 		waypointIndex--;
+	}
+
+	public void HideInDarkness(bool hidden){
+		
+		gameObject.layer = LayerMask.NameToLayer (hidden ? "Enemy" : "Robot");
+
+		if(hidden){
+			Debug.Log ("CANT SEE ME");
+		} else {
+			Debug.Log("OH NOES YOU SEEZ");
+		}
 	}
 }
