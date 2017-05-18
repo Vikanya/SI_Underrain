@@ -17,7 +17,9 @@ public class SkillAssignment : MonoBehaviour {
 	public void SetCurrentSkill(string skill){
 		currentSkill = skill;
 	}
-
+	public void SetCursorTexture(Texture2D tex){
+		Cursor.SetCursor(tex,Vector2.zero,CursorMode.Auto);
+	}
 	void Awake(){
 		instance = this;
 	}
