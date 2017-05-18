@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour {
 	public RectTransform cardPanel;
 	public GameObject[] cards;
 
+	public bool actionPhase;
+
 	float cardWidth;
 	int cardNumber;
 
@@ -83,14 +85,21 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update(){
-		if (Input.GetButtonDown("Robot1")){
-			robot1.NextSkill();
-		}
-		if (Input.GetButtonDown("Robot2")){
-			robot2.NextSkill();
-		}
-		if (Input.GetButtonDown("Robot3")){
-			robot3.NextSkill();
+		if (!actionPhase){
+			if (Input.GetButtonDown ("Next")) {
+				actionPhase = true;
+				cardPanel.gameObject.SetActive (false);
+			}
+		} else {
+			if (Input.GetButtonDown ("Robot1")) {
+				robot1.NextSkill ();
+			}
+			if (Input.GetButtonDown ("Robot2")) {
+				robot2.NextSkill ();
+			}
+			if (Input.GetButtonDown ("Robot3")) {
+				robot3.NextSkill ();
+			}
 		}
 	}
 

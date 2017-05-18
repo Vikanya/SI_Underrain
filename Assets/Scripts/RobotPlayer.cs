@@ -19,6 +19,7 @@ public class RobotPlayer : MonoBehaviour {
 	public float attackRange = 7f;
 	public float camouflageTime = 2f;
 	public float distractionRange = 10f;
+	public float interactRange = 2f;
 	float hiddenTimer;
 	bool camoOn;
 	float totalMoved;
@@ -28,6 +29,10 @@ public class RobotPlayer : MonoBehaviour {
 
 	public LayerMask layerShootable;
 	public LayerMask layerEnemy;
+	public LayerMask layerObstacle;
+	public LayerMask layerInteractable;
+
+	public GameObject prefabMine;
 
 	#region temporaire
 	public Material camoMat;
@@ -96,8 +101,11 @@ public class RobotPlayer : MonoBehaviour {
 	void Distract(){
 	}
 	public void NextSkill(){
-		if (!skillList [0].Equals ("Hide") && !skillList [0].Equals ("Distract")) {
-			if (!ready || skillList.Count == 0) 
+		if (skillList.Count == 0){
+			Debug.Log ("list = 0");
+			return;
+		}
+		if (!ready && !skillList [0].Equals ("Hide") && !skillList [0].Equals ("Distract") && !skillList [0].Equals ("Mine")) { 
 				return;
 		}
 		if (ExecuteSkill (skillList [0])){
@@ -111,7 +119,11 @@ public class RobotPlayer : MonoBehaviour {
 			TriggerAttack ();
 			break;
 		case "Move":
-			TriggerMove ();
+			if (CheckMove ()) {
+				TriggerMove ();
+			} else {
+				return false;
+			}
 			break;
 		case "Interact":
 			TriggerInteract ();
@@ -122,6 +134,16 @@ public class RobotPlayer : MonoBehaviour {
 		case "Distract":
 			TriggerDistract ();
 			break;
+		case "Mine":
+			TriggerMine();
+			break;
+		case "Back":
+			if (CheckBack()){
+				TriggerBack();
+			}else {
+				return false;
+			}
+			break;
 		default:
 			ready = true;
 			break;
@@ -129,14 +151,33 @@ public class RobotPlayer : MonoBehaviour {
 		return true;
 	}
 
+
+	bool CheckMove(){
+		if (waypointIndex >= waypoints.Count-1)
+			return true;
+		
+		Vector3 checkDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
+		float checkDist = checkDir.magnitude;
+		checkDir = checkDir.normalized;
+		return !Physics.Raycast (transform.position, checkDir, checkDist, layerObstacle);
+	}
+	bool CheckBack(){
+		if (waypointIndex <= 0)
+			return false;
+		
+		Vector3 checkDir = (waypoints [waypointIndex - 1] - waypoints [waypointIndex]);
+		float checkDist = checkDir.magnitude;
+		checkDir = checkDir.normalized;
+		return !Physics.Raycast (transform.position, checkDir, checkDist, layerObstacle);
+	}
 	void TriggerAttack(){
 		Attack ();
 	}
 
 	void TriggerMove(){
-		if (waypoints.Count <= waypointIndex-1)
+		if (waypointIndex >= waypoints.Count - 1)
 			return;
-
+		
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -144,7 +185,19 @@ public class RobotPlayer : MonoBehaviour {
 		waypointIndex++;
 	}
 	void TriggerInteract(){
+		currTarget = null;
+		Collider[] interactablesInRange = Physics.OverlapSphere (transform.position, interactRange, layerInteractable);
+		float minSqrDist = float.MaxValue;
 
+		for (int i = 0; i < interactablesInRange.Length; i++) {
+			if (minSqrDist > (interactablesInRange [i].transform.position - transform.position).sqrMagnitude){
+				minSqrDist = (interactablesInRange [i].transform.position - transform.position).sqrMagnitude;
+				currTarget = interactablesInRange [i].gameObject;
+			}
+		}
+		if (currTarget) {
+			currTarget.GetComponent<Terminal> ().Activate ();
+		}
 	}
 	void TriggerHide(){
 		rend.material = camoMat;
@@ -157,6 +210,19 @@ public class RobotPlayer : MonoBehaviour {
 		for (int a = 0; a < enemiesInRange.Length; a++) {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}
-		Debug.Log ("distractiong");
+	}
+	void TriggerMine(){
+		Instantiate (prefabMine, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+	}
+	void TriggerBack(){
+		if (waypointIndex <= 0)
+			return;
+
+		Debug.Log (waypointIndex);
+		totalMoved = 0;
+		moveDir = (waypoints [waypointIndex - 1] - waypoints [waypointIndex]);
+		moveDist = moveDir.magnitude;
+		moveDir = moveDir.normalized;
+		waypointIndex--;
 	}
 }

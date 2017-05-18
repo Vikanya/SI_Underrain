@@ -46,6 +46,8 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 	
 	void Update () {
+		if (!GameManager.instance.actionPhase)
+			return;
 		if (!isPlayerDetected) {
 			if (!distracted) {
 				Move ();
@@ -149,6 +151,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	public void Shot(){
 		Debug.Log ("I AM DEAD");
+		gameObject.SetActive (false);
 	}
 }
 

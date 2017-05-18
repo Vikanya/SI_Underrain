@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: d6a3bd063e5ce074f9c6b006d8961710
 folderAsset: yes
 timeCreated: 1495013644
+=======
+guid: 416a37664a54d8440af9a360b3e04e39
+folderAsset: yes
+timeCreated: 1495030555
+>>>>>>> Alo
 licenseType: Pro
 DefaultImporter:
   userData: 
