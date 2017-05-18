@@ -97,7 +97,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		if (GameManager.instance.actionPhase) {
 			for (int i = 0; i < robots.Length; i++) {
 				if (SinglePlayerWatch (robots [i])) {
-					Debug.Log ("DETRCTERD");
+					//Debug.Log ("DETRCTERD");
 					isPlayerDetected = true;
 					detectionFeedback.gameObject.SetActive (true);
 					playerDetected = robots [i];
