@@ -131,7 +131,8 @@ public class EnemyBehaviour : MonoBehaviour {
 		if (detectionTimer <= 0f){
 			anim.SetBool ("firing", true);
 			gameOver = true;
-			GameManager.instance.GameOver();
+			playerDetected.Die ();
+			Invoke ("DelayedGameOver", 2);
 
 		}
 		transform.LookAt (playerDetected.transform);
@@ -207,6 +208,11 @@ public class EnemyBehaviour : MonoBehaviour {
 	public void DelayedVictory()
 	{
 		GameManager.instance.Victory ();
+	}
+
+	public void DelayedGameOver()
+	{
+		GameManager.instance.GameOver ();
 	}
 }
 

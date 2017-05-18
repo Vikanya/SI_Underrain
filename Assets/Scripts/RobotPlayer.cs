@@ -348,4 +348,9 @@ public class RobotPlayer : MonoBehaviour {
 			}
 		}
 	}
+
+	public void Die()
+	{
+		anim.SetTrigger ("Death");
+	}
 }
