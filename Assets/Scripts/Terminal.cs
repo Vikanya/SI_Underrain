@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Terminal : MonoBehaviour {
 
-	public ActivableObject activableObject;
+	public ActivableObject[] activableObjects;
 
 
 	public void Activate(){
-		activableObject.GetActivated();
+        foreach(ActivableObject activableObject in activableObjects) {
+            activableObject.Trigger();
+        }
 	}
 
 }
