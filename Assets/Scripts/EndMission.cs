@@ -28,6 +28,7 @@ public class EndMission : MonoBehaviour {
     }
 
     public void TitleScreen() {
+		Time.timeScale = 1;
         SceneManager.LoadScene(titleScreen);
     }
 
