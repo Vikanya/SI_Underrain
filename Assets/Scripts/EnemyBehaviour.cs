@@ -37,6 +37,13 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	RobotPlayer[] robots = new RobotPlayer[3];
 
+	private FieldOfView fov;
+	public DetectionFeedback detectionFeedback;
+
+
+	//ANim
+	Animator anim;
+
 	void Start () {
 		foreach (Transform child in waypointParent) {
 			waypoints.Add (new Vector3(child.position.x, 0, child.position.z));
@@ -45,10 +52,11 @@ public class EnemyBehaviour : MonoBehaviour {
 		waypointParent.gameObject.SetActive (false);
 		robots = FindObjectsOfType<RobotPlayer> ();
 
-		FieldOfView fov = GetComponent<FieldOfView> ();
+		fov = GetComponent<FieldOfView> ();
 		visionLength = fov.viewRadius;
 		visionDotProduct = Mathf.Cos (fov.viewAngle * .5f * Mathf.Deg2Rad );
 
+		anim = GetComponentInChildren<Animator> ();
 	}
 	
 	void Update () {
@@ -67,15 +75,19 @@ public class EnemyBehaviour : MonoBehaviour {
 	void Move(){
 
 		if (staticEnemy)
+		{
+			anim.SetFloat ("speed", 0);
 			return;
+		}
 
 		if (totalMoved - moveDist < 0) {
-
+			anim.SetFloat ("speed",1);
 			moveAmount = Time.deltaTime * speed;
 			totalMoved += moveAmount;
 			transform.Translate (moveDir * moveAmount, Space.World);
 		} else {
 			timerWait -= Time.deltaTime;
+			anim.SetFloat ("speed", 0);
 			if (timerWait <= 0){
 				NextPoint ();
 			}
@@ -87,8 +99,12 @@ public class EnemyBehaviour : MonoBehaviour {
 				if (SinglePlayerWatch (robots [i])) {
 					Debug.Log ("DETRCTERD");
 					isPlayerDetected = true;
+					detectionFeedback.gameObject.SetActive (true);
 					playerDetected = robots [i];
 					detectionTimer = detectionDelay;
+
+					anim.SetTrigger ("aims");
+
 				}
 			}
 		}
@@ -111,13 +127,21 @@ public class EnemyBehaviour : MonoBehaviour {
 			return;
 		detectionTimer -= Time.deltaTime;
 		if (detectionTimer <= 0f){
+			anim.SetBool ("firing", true);
 			gameOver = true;
 			GameManager.instance.GameOver();
+
 		}
 		transform.LookAt (playerDetected.transform);
 		if (!SinglePlayerWatch(playerDetected)){
 			isPlayerDetected = false;
+			detectionFeedback.gameObject.SetActive (false);
+
+			anim.SetTrigger ("drop");
 		}
+
+		detectionFeedback.SetFillAmount (1 - (detectionTimer / detectionDelay));
+
 	}
 	void BeDistracted(){
 		distractionTimer -= Time.deltaTime;
@@ -160,10 +184,17 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	public void Shot(){
-		Debug.Log ("I AM DEAD");
+		//Debug.Log ("I AM DEAD");
+
+		anim.SetTrigger ("dies");
+		gameObject.layer = LayerMask.NameToLayer ("Default");
+		detectionFeedback.gameObject.SetActive (false);
+		fov.enabled = false;
+		fov.viewMeshFilter.gameObject.SetActive(false);
+		this.enabled = false;
 		if (target)
 			GameManager.instance.Victory ();
-		gameObject.SetActive (false);
+		//gameObject.SetActive (false);
 	}
 }
 

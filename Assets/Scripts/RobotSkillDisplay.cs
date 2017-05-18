@@ -60,7 +60,7 @@ public class RobotSkillDisplay : MonoBehaviour {
 
 		if (amountAdded > 0) {
 			if (activeDisplays + amountAdded > quads.Count) {
-				Debug.Log ("HAHAH");
+				//Debug.Log ("HAHAH");
 				return;
 			}
 
@@ -90,9 +90,13 @@ public class RobotSkillDisplay : MonoBehaviour {
 
 	public void HideAllButOne(){
 		quads [0].transform.position = new Vector3 (transform.position.x, transform.position.y + 3.5f, transform.position.z);
-		for (int i = 1; i < quads.Count; i++) {
-			quads [i].SetActive (false);
+		if(quads.Count>0)
+		{
+			for (int i = 1; i < quads.Count; i++) {
+				quads [i].SetActive (false);
+			}
 		}
+
 	}
 
 	public void DisplayNextSkill(bool lastOne){

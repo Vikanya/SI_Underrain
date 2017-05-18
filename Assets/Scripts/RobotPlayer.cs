@@ -74,6 +74,8 @@ public class RobotPlayer : MonoBehaviour {
 
 	void Update(){
 		// MOVEMENT
+		if (GameManager.instance.actionPhase)
+			CheckIfShootable ();
 		Move ();
 		if (camoOn)
 			Hide ();
@@ -259,6 +261,54 @@ public class RobotPlayer : MonoBehaviour {
 			Debug.Log ("CANT SEE ME");
 		} else {
 			Debug.Log("OH NOES YOU SEEZ");
+		}
+	}
+
+
+	public void CheckIfShootable()
+	{
+		currTarget = null;
+		Collider[] shootablesInRange = Physics.OverlapSphere (transform.position, attackRange, layerShootable);
+		float minSqrDist = float.MaxValue;
+
+		for (int i = 0; i < shootablesInRange.Length; i++) {
+			if (minSqrDist > (shootablesInRange [i].transform.position - transform.position).sqrMagnitude 
+				&& !Physics.Raycast(transform.position, shootablesInRange [i].transform.position - transform.position, (shootablesInRange [i].transform.position - transform.position).magnitude, layerObstacle)){
+				minSqrDist = (shootablesInRange [i].transform.position - transform.position).sqrMagnitude;
+				currTarget = shootablesInRange [i].gameObject;
+			}
+		}
+		if (currTarget) {
+			if(skillList.Count > 0 && skillList[0] == "Attack") 
+			{
+				if (name.Contains("A"))
+				{
+					currTarget.GetComponent<ShootTargets> ().ShowTarget (0, true);
+				}
+				else if (name.Contains("B"))
+				{
+					currTarget.GetComponent<ShootTargets> ().ShowTarget (1, true);
+				}
+				else if (name.Contains("C"))
+				{
+					currTarget.GetComponent<ShootTargets> ().ShowTarget (2, true);
+				}
+			}
+			else
+			{
+				if (name.Contains("A"))
+				{
+					currTarget.GetComponent<ShootTargets> ().IndicateTarget (0);
+				}
+				else if (name.Contains("B"))
+				{
+					currTarget.GetComponent<ShootTargets> ().IndicateTarget (1);
+				}
+				else if (name.Contains("C"))
+				{
+					currTarget.GetComponent<ShootTargets> ().IndicateTarget (2);
+				}
+			}
 		}
 	}
 }

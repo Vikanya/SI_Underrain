@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
 
@@ -65,43 +66,43 @@ public class GameManager : MonoBehaviour {
 			if (moveAmount == 0)
 				return false;
 			moveAmount--;
-			cards[0].GetComponentInChildren<Text>().text = "x" + moveAmount;
+			cards[0].GetComponentInChildren<TextMeshProUGUI>().text =  moveAmount.ToString();
 			break;
 		case "Attack":
 			if (attackAmount == 0)
 				return false;
 			attackAmount--;
-			cards[1].GetComponentInChildren<Text>().text = "x" + attackAmount;
+			cards[1].GetComponentInChildren<TextMeshProUGUI>().text = attackAmount.ToString();
 			break;
 		case "Interact":
 			if (interactAmount == 0)
 				return false;
 			interactAmount--;
-			cards[2].GetComponentInChildren<Text>().text = "x" + interactAmount;
+			cards[2].GetComponentInChildren<TextMeshProUGUI>().text =  interactAmount.ToString();
 			break;
 		case "Hide":
 			if (camoAmount == 0)
 				return false;
 			camoAmount--;
-			cards[3].GetComponentInChildren<Text>().text = "x" + camoAmount;
+			cards[3].GetComponentInChildren<TextMeshProUGUI>().text =  camoAmount.ToString();
 			break;
 		case "Distract":
 			if (distractAmount == 0)
 				return false;
 			distractAmount--;
-			cards[4].GetComponentInChildren<Text>().text = "x" + distractAmount;
+			cards[4].GetComponentInChildren<TextMeshProUGUI>().text = distractAmount.ToString();
 			break;
 		case "Mine":
 			if (mineAmount == 0)
 				return false;
 			mineAmount--;
-			cards[5].GetComponentInChildren<Text>().text = "x" + mineAmount;
+			cards[5].GetComponentInChildren<TextMeshProUGUI>().text =  mineAmount.ToString();
 			break;
 		case "Back":
 			if (backAmount == 0)
 				return false;
 			backAmount--;
-			cards[6].GetComponentInChildren<Text>().text = "x" + backAmount;
+			cards[6].GetComponentInChildren<TextMeshProUGUI>().text =  backAmount.ToString();
 			break;
 		default:
 			break;
@@ -113,31 +114,31 @@ public class GameManager : MonoBehaviour {
 		switch (cardName) {
 		case "Move":
 			moveAmount++;
-			cards[0].GetComponentInChildren<Text>().text = "x" + moveAmount;
+			cards[0].GetComponentInChildren<TextMeshProUGUI>().text =  moveAmount.ToString();
 			break;
 		case "Attack":
 			attackAmount++;
-			cards[1].GetComponentInChildren<Text>().text = "x" + attackAmount;
+			cards[1].GetComponentInChildren<TextMeshProUGUI>().text = attackAmount.ToString();
 			break;
 		case "Interact":
 			interactAmount++;
-			cards[2].GetComponentInChildren<Text>().text = "x" + interactAmount;
+			cards[2].GetComponentInChildren<TextMeshProUGUI>().text =  interactAmount.ToString();
 			break;
 		case "Hide":
 			camoAmount++;
-			cards[3].GetComponentInChildren<Text>().text = "x" + camoAmount;
+			cards[3].GetComponentInChildren<TextMeshProUGUI>().text =  camoAmount.ToString();
 			break;
 		case "Distract":
 			distractAmount++;
-			cards[4].GetComponentInChildren<Text>().text = "x" + distractAmount;
+			cards[4].GetComponentInChildren<TextMeshProUGUI>().text =  distractAmount.ToString();
 			break;
 		case "Mine":
 			mineAmount++;
-			cards[5].GetComponentInChildren<Text>().text = "x" + mineAmount;
+			cards[5].GetComponentInChildren<TextMeshProUGUI>().text =  mineAmount.ToString();
 			break;
 		case "Back":
 			backAmount++;
-			cards[6].GetComponentInChildren<Text>().text = "x" + backAmount;
+			cards[6].GetComponentInChildren<TextMeshProUGUI>().text =  backAmount.ToString();
 			break;
 		default:
 			break;
@@ -196,43 +197,43 @@ public class GameManager : MonoBehaviour {
 			cards [0].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [0].GetComponentInChildren<Text> ().text = "x" + moveAmount;
+			cards [0].GetComponentInChildren<TextMeshProUGUI> ().text = moveAmount.ToString();
 		}
 		if (attackAmount == 0){
 			cards [1].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [1].GetComponentInChildren<Text> ().text = "x" + attackAmount;
+			cards [1].GetComponentInChildren<TextMeshProUGUI> ().text =  attackAmount.ToString();
 		}
 		if (interactAmount == 0){
 			cards [2].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [2].GetComponentInChildren<Text> ().text = "x" + interactAmount;
+			cards [2].GetComponentInChildren<TextMeshProUGUI> ().text = interactAmount.ToString();
 		}
 		if (camoAmount == 0){
 			cards [3].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [3].GetComponentInChildren<Text> ().text = "x" + camoAmount;
+			cards [3].GetComponentInChildren<TextMeshProUGUI> ().text =  camoAmount.ToString();
 		}
 		if (distractAmount == 0){
 			cards [4].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [4].GetComponentInChildren<Text> ().text = "x" + distractAmount;
+			cards [4].GetComponentInChildren<TextMeshProUGUI> ().text =  distractAmount.ToString();
 		}
 		if (mineAmount == 0){
 			cards [5].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [5].GetComponentInChildren<Text> ().text = "x" + mineAmount;
+			cards [5].GetComponentInChildren<TextMeshProUGUI> ().text =  mineAmount.ToString();
 		}
 		if (backAmount == 0){
 			cards [6].SetActive (false);
 		} else {
 			cardNumber++;
-			cards [6].GetComponentInChildren<Text> ().text = "x" + backAmount;
+			cards [6].GetComponentInChildren<TextMeshProUGUI> ().text = backAmount.ToString();
 		}
 	}
 
