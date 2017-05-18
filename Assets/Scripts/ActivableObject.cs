@@ -14,6 +14,8 @@ public class ActivableObject : MonoBehaviour {
 
 	DoorActivation doorActiv;
 
+	Collider coll;
+
 	void Start(){
 		switch (doorColor) {
 		case DoorColor.Blue:
@@ -34,10 +36,13 @@ public class ActivableObject : MonoBehaviour {
 			break;
 		}
 		doorActiv.SetState (state);
+		coll = GetComponent<Collider> ();
+		coll.enabled = state;
 	}
 
 	public void Trigger(){
 		state = !state;
+		coll.enabled = state;
 		doorActiv.SetState (state);
 	}
 

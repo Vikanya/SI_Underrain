@@ -78,7 +78,7 @@ public class RobotPlayer : MonoBehaviour {
 	void Update(){
 		// MOVEMENT
 		if (GameManager.instance.actionPhase){
-			print ("slt");
+			//print ("slt");
 			CheckIfShootable ();
 			Distract ();
 		}
