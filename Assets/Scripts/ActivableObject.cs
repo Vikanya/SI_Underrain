@@ -4,18 +4,52 @@ using UnityEngine;
 
 public class ActivableObject : MonoBehaviour {
 
-	public Vector3 destination;
-	Vector3 origin;
+
+	public DoorColor doorColor;
+	public bool state;
+
+	public GameObject blueDoor;
+	public GameObject redDoor;
+	public GameObject yellowDoor;
+
+	DoorActivation doorActiv;
+
+	Collider coll;
 
 	void Start(){
-		origin = transform.position;
+		switch (doorColor) {
+		case DoorColor.Blue:
+			blueDoor.SetActive (true);
+			doorActiv = blueDoor.GetComponent<DoorActivation> ();
+			break;
+		case DoorColor.Red:
+			redDoor.SetActive(true);
+			doorActiv = redDoor.GetComponent<DoorActivation> ();
+			break;
+		case DoorColor.Yellow:
+			yellowDoor.SetActive(true);
+			doorActiv = yellowDoor.GetComponent<DoorActivation> ();
+			break;
+		default:
+			blueDoor.SetActive(true);
+			doorActiv = blueDoor.GetComponent<DoorActivation> ();
+			break;
+		}
+		doorActiv.SetState (state);
+		coll = GetComponent<Collider> ();
+		coll.enabled = state;
 	}
 
 	public void Trigger(){
-		if (transform.position == origin){
-			transform.position = destination;
-		} else {
-			transform.position = origin;
-		}
+		state = !state;
+		coll.enabled = state;
+		doorActiv.SetState (state);
+	}
+
+	public enum DoorColor
+	{
+		Blue,
+		Red,
+		Yellow
 	}
 }
