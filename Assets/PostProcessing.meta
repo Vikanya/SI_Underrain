@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: ba3cce6fcdccb8c4f9ad7565ba3df44e
 folderAsset: yes
 timeCreated: 1495135396
+=======
+guid: 4e9dc5c61210a2c428f089308f609e75
+folderAsset: yes
+timeCreated: 1495138591
+>>>>>>> Antoine
 licenseType: Pro
 DefaultImporter:
   userData: 
