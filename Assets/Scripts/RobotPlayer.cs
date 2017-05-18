@@ -48,12 +48,21 @@ public class RobotPlayer : MonoBehaviour {
 	public void AssignSkill(string skill){
 		skillList.Add (skill);
 	}
+
+	public string RemoveSkill(){
+		if (skillList.Count <= 0)
+			return "no";
+		string skillRemoved = skillList [skillList.Count - 1];
+		skillList.RemoveAt (skillList.Count - 1);
+		return skillRemoved;
+	}
+
     void GenerateRail() {
         waypoints.Add(transform.position);
         foreach (Transform child in waypointsObjects) {
             waypoints.Add(child.position);
         }
-
+        Instantiate(waypointsObjects[0], transform.position, transform.rotation);
         LineRenderer rail = waypointParent.GetComponent<LineRenderer>();
 
         rail.positionCount = waypoints.Count;
@@ -119,6 +128,8 @@ public class RobotPlayer : MonoBehaviour {
 		}
 		if (ExecuteSkill (skillList [0])){
 			skillList.RemoveAt (0);
+			GetComponentInChildren<RobotSkillDisplay> ().DisplayNextSkill (skillList.Count <= 0);
+
 		}
 	}
 	bool ExecuteSkill(string skill){
