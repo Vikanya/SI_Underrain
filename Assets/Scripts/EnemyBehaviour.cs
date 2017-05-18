@@ -14,9 +14,8 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	float moveAmount;
 	public float speed = 15f;
-	public float visionLength = 5f;
-	[Tooltip("Si égal à 0, ennemi a un cône de vision à 180°, si égal à 1 vision à 0°")]
-	public float visionDotProduct = .3f;
+	float visionLength = 5f;
+	float visionDotProduct = .3f;
 	public float detectionDelay = 2f;
 	public bool staticEnemy;
 	float detectionTimer;
@@ -45,6 +44,11 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 		waypointParent.gameObject.SetActive (false);
 		robots = FindObjectsOfType<RobotPlayer> ();
+
+		FieldOfView fov = GetComponent<FieldOfView> ();
+		visionLength = fov.viewRadius;
+		visionDotProduct = Mathf.Cos (fov.viewAngle * .5f * Mathf.Deg2Rad );
+
 	}
 	
 	void Update () {
@@ -78,10 +82,10 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 	void PlayerWatch(){
-		if (!GameManager.instance.actionPhase) {
+		if (GameManager.instance.actionPhase) {
 			for (int i = 0; i < robots.Length; i++) {
 				if (SinglePlayerWatch (robots [i])) {
-					//Debug.Log ("DETRCTERD");
+					Debug.Log ("DETRCTERD");
 					isPlayerDetected = true;
 					playerDetected = robots [i];
 					detectionTimer = detectionDelay;

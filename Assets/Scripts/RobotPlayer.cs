@@ -85,7 +85,12 @@ public class RobotPlayer : MonoBehaviour {
 				totalMoved += moveAmount;
 				transform.Translate (moveDir * moveAmount, Space.World);
 			} else {
-				ready = true;
+				if (waypointIndex>0 && waypointsObjects [waypointIndex-1].localScale.x == 0) {
+					
+					TriggerMove ();
+				} else{
+					ready = true;
+				}
 			}
 	}
 	void Attack(){
