@@ -40,11 +40,7 @@ public class RobotPlayer : MonoBehaviour {
 	#endregion
 
 	void Start(){
-		waypoints.Add (transform.position);
-		foreach (Transform child in waypointsObjects) {
-			waypoints.Add (child.position);
-		}
-		waypointParent.SetParent(null, true);
+        GenerateRail();
 		rend = GetComponent<Renderer> ();
 		baseMat = rend.material;
 	}
@@ -52,7 +48,20 @@ public class RobotPlayer : MonoBehaviour {
 	public void AssignSkill(string skill){
 		skillList.Add (skill);
 	}
+    void GenerateRail() {
+        waypoints.Add(transform.position);
+        foreach (Transform child in waypointsObjects) {
+            waypoints.Add(child.position);
+        }
 
+        LineRenderer rail = waypointParent.GetComponent<LineRenderer>();
+
+        rail.positionCount = waypoints.Count;
+        for (int i = 0; i < rail.positionCount; i++) {
+            rail.SetPosition(i, waypoints[i]);
+        }
+        waypointParent.SetParent(null, true);
+    }
 
 	void Update(){
 		// MOVEMENT
