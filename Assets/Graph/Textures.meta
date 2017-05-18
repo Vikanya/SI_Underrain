@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 9652880df7fe8e048863f42fb8b3efbb
 folderAsset: yes
 timeCreated: 1495016429
+=======
+guid: 378768bee918ab648b8d6e536e45e617
+folderAsset: yes
+timeCreated: 1495022211
+>>>>>>> Bobu
 licenseType: Pro
 DefaultImporter:
   userData: 
