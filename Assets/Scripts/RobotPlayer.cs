@@ -45,7 +45,7 @@ public class RobotPlayer : MonoBehaviour {
         GenerateRail();
 		rend = GetComponent<Renderer> ();
 		baseMat = rend.material;
-		distractionZone.transform.localScale = new Vector3 (distractionRange, distractionRange, distractionRange);
+		distractionZone.transform.localScale = new Vector3 (distractionRange*2, distractionRange*2, distractionRange*2);
 	}
 
 	public void AssignSkill(string skill){
@@ -77,10 +77,12 @@ public class RobotPlayer : MonoBehaviour {
 
 	void Update(){
 		// MOVEMENT
-		if (GameManager.instance.actionPhase)
+		if (GameManager.instance.actionPhase){
+			print ("slt");
 			CheckIfShootable ();
+			Distract ();
+		}
 		Move ();
-		Distract ();
 		if (camoOn)
 			Hide ();
 	}
@@ -89,6 +91,7 @@ public class RobotPlayer : MonoBehaviour {
 
 				moveAmount = Time.deltaTime * speed;
 				totalMoved += moveAmount;
+                print("en train de bouger");
 				transform.Translate (moveDir * moveAmount, Space.World);
 			} else {
 				if (waypointIndex>0 && waypointsObjects [waypointIndex-1].localScale.x == 0) {
@@ -140,9 +143,9 @@ public class RobotPlayer : MonoBehaviour {
 		}
 		if (!ready && !skillList [0].Equals ("Hide") && !skillList [0].Equals ("Distract") && !skillList [0].Equals ("Mine")) { 
 				return;
-		}
+        }
 		if (ExecuteSkill (skillList [0])){
-			skillList.RemoveAt (0);
+            skillList.RemoveAt (0);
 			GetComponentInChildren<RobotSkillDisplay> ().DisplayNextSkill (skillList.Count <= 0);
 
 		}
@@ -212,6 +215,7 @@ public class RobotPlayer : MonoBehaviour {
 	void TriggerMove(){
 		if (waypointIndex >= waypoints.Count - 1)
 			return;
+        print("trigger move");
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -240,7 +244,7 @@ public class RobotPlayer : MonoBehaviour {
 		gameObject.layer = LayerMask.NameToLayer ("Enemy");
 	}
 	void TriggerDistract(){
-		Collider[] enemiesInRange = Physics.OverlapSphere (transform.position, attackRange, layerEnemy);
+		Collider[] enemiesInRange = Physics.OverlapSphere (transform.position, distractionRange, layerEnemy);
 		for (int a = 0; a < enemiesInRange.Length; a++) {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}

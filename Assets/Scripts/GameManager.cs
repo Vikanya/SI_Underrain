@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour {
 	void Start ()
 	{
 		InitializeDeck ();
+        Time.timeScale = 1;
 		/*cardWidth = cards [0].GetComponent<RectTransform> ().rect.width;
 		float totalWidth = cardNumber * cardWidth + tinySpace * (cardNumber - 1);
 		totalWidth = Mathf.Clamp (totalWidth, 0, totalWidth);
@@ -167,10 +168,10 @@ public class GameManager : MonoBehaviour {
 			}
 			if (Input.GetButtonDown ("Robot2")) {
 				robot2.NextSkill ();
-			}
+            }
 			if (Input.GetButtonDown ("Robot3")) {
 				robot3.NextSkill ();
-			}
+            }
 		}
 	}
 
