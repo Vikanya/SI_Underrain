@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour {
 
 	public bool actionPhase;
 
+    public GameObject endMission;
+
 	float cardWidth;
 	int cardNumber;
 

@@ -53,7 +53,7 @@ public class RobotPlayer : MonoBehaviour {
         foreach (Transform child in waypointsObjects) {
             waypoints.Add(child.position);
         }
-
+        Instantiate(waypointsObjects[0], transform.position, transform.rotation);
         LineRenderer rail = waypointParent.GetComponent<LineRenderer>();
 
         rail.positionCount = waypoints.Count;

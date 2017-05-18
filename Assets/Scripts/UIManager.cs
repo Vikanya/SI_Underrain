@@ -17,16 +17,6 @@ public class UIManager : MonoBehaviour {
     TextMeshProUGUI lvlName;
     SceneField levelToStart;
     
-    #region Singleton
-    public static UIManager instance;
-    void Awake() {
-        if (!instance) {
-            instance = this;
-        } else if (instance != this)
-            Destroy(gameObject);
-    }
-    #endregion
-
     public void Start() {
         SelectLevel(currentIndex);
     }
