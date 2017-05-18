@@ -86,7 +86,7 @@ public class VegetationTool : MonoBehaviour {
 						}
 						GameObject instance = Instantiate(elements[chosenElem].vegePrefab, hit.point, Quaternion.FromToRotation(Vector3.up,normal)) as GameObject;
 						instance.transform.localScale *= Random.Range(elements[chosenElem].scaleChange.min, elements[chosenElem].scaleChange.max);
-						instance.transform.position += instance.transform.forward *Random.Range(-posRandom,posRandom) + instance.transform.right *Random.Range(-posRandom,posRandom) + transform.up*Random.Range(0,heightRandom);
+						instance.transform.position += instance.transform.forward *Random.Range(-posRandom,posRandom) + instance.transform.right *Random.Range(-posRandom,posRandom) + instance.transform.up*Random.Range(0,heightRandom);
 						instance.transform.RotateAround(instance.transform.position,normal,Random.Range(0,360));
 						instance.transform.parent = vegeGroup.transform;
 					}
