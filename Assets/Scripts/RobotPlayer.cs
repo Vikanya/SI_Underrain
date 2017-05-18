@@ -94,7 +94,8 @@ public class RobotPlayer : MonoBehaviour {
 		float minSqrDist = float.MaxValue;
 
 		for (int i = 0; i < shootablesInRange.Length; i++) {
-			if (minSqrDist > (shootablesInRange [i].transform.position - transform.position).sqrMagnitude){
+			if (minSqrDist > (shootablesInRange [i].transform.position - transform.position).sqrMagnitude 
+				&& !Physics.Raycast(transform.position, shootablesInRange [i].transform.position - transform.position, (shootablesInRange [i].transform.position - transform.position).magnitude, layerObstacle)){
 				minSqrDist = (shootablesInRange [i].transform.position - transform.position).sqrMagnitude;
 				currTarget = shootablesInRange [i].gameObject;
 			}

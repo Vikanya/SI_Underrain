@@ -18,6 +18,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	[Tooltip("Si égal à 0, ennemi a un cône de vision à 180°, si égal à 1 vision à 0°")]
 	public float visionDotProduct = .3f;
 	public float detectionDelay = 2f;
+	public bool staticEnemy;
 	float detectionTimer;
 	float totalMoved;
 	float timerWait;
@@ -60,6 +61,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Move(){
+
+		if (staticEnemy)
+			return;
+
 		if (totalMoved - moveDist < 0) {
 
 			moveAmount = Time.deltaTime * speed;
@@ -76,7 +81,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		if (!GameManager.instance.actionPhase) {
 			for (int i = 0; i < robots.Length; i++) {
 				if (SinglePlayerWatch (robots [i])) {
-					Debug.Log ("DETRCTERD");
+					//Debug.Log ("DETRCTERD");
 					isPlayerDetected = true;
 					playerDetected = robots [i];
 					detectionTimer = detectionDelay;
