@@ -11,7 +11,7 @@ public class ActivableObject : MonoBehaviour {
 		origin = transform.position;
 	}
 
-	public void GetActivated(){
+	public void Trigger(){
 		if (transform.position == origin){
 			transform.position = destination;
 		} else {
