@@ -8,29 +8,31 @@ public class ActivableObject : MonoBehaviour {
 	public DoorColor doorColor;
 	public bool state;
 
-	public GameObject blueDoorPrefab;
-	public GameObject redDoorPrefab;
-	public GameObject yellowDoorPrefab;
+	public GameObject blueDoor;
+	public GameObject redDoor;
+	public GameObject yellowDoor;
 
-	GameObject tmpObj;
 	DoorActivation doorActiv;
 
 	void Start(){
 		switch (doorColor) {
 		case DoorColor.Blue:
-			tmpObj = Instantiate (blueDoorPrefab, transform.position, transform.rotation, transform);
+			blueDoor.SetActive (true);
+			doorActiv = blueDoor.GetComponent<DoorActivation> ();
 			break;
 		case DoorColor.Red:
-			tmpObj = Instantiate (redDoorPrefab, transform.position, transform.rotation, transform);
+			redDoor.SetActive(true);
+			doorActiv = redDoor.GetComponent<DoorActivation> ();
 			break;
 		case DoorColor.Yellow:
-			tmpObj = Instantiate (yellowDoorPrefab, transform.position, transform.rotation, transform);
+			yellowDoor.SetActive(true);
+			doorActiv = yellowDoor.GetComponent<DoorActivation> ();
 			break;
 		default:
-			tmpObj = Instantiate (blueDoorPrefab, transform.position, transform.rotation, transform);
+			blueDoor.SetActive(true);
+			doorActiv = blueDoor.GetComponent<DoorActivation> ();
 			break;
 		}
-		doorActiv = tmpObj.GetComponent<DoorActivation> ();
 		doorActiv.SetState (state);
 	}
 
