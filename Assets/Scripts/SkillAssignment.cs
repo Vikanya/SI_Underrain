@@ -23,34 +23,31 @@ public class SkillAssignment : MonoBehaviour {
 	}
 
 	void Update(){
-		/*if (Input.GetButtonDown("Fire1")){
-			Debug.Log ("Fired");
-			//Debug.DrawRay (rayToMousePoint2D.origin, rayToMousePoint2D.direction*500, Color.black, 1f);
-
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit, 100f)){
-				Debug.Log ("on ui " + hit.transform.name);
-				currentSkill = hit.transform.tag;
-
-
-			} else {
-				currentSkill = null;
-			}
-		}*/
 
 		if (Input.GetButtonUp ("Fire1")) {
 			if (currentSkill != null){
-				//Debug.Log ("fired released");
 				rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast(rayToMousePoint, out hit, float.MaxValue, layerRobot)){
-					//Debug.Log ("on robot " + hit.transform.name);
-					hit.transform.GetComponent<RobotPlayer> ().AssignSkill (currentSkill);
-					hit.transform.GetComponentInChildren<RobotSkillDisplay> ().ManageDisplays (1, currentSkill);
-					GameManager.instance.ConsumeCard (currentSkill);
+					if (GameManager.instance.ConsumeCard (currentSkill)) {
+						hit.transform.GetComponentInChildren<RobotSkillDisplay> ().ManageDisplays (1, currentSkill);
+						hit.transform.GetComponent<RobotPlayer> ().AssignSkill (currentSkill);
+
+					}
 				}
 				currentSkill = null;
 			}
+		}
+
+		if (Input.GetButtonDown ("Fire2")) {
+			rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
+			if (Physics.Raycast (rayToMousePoint, out hit, float.MaxValue, layerRobot)) {
+				string skillToRemove = hit.transform.GetComponent<RobotPlayer> ().RemoveSkill ();
+				if (!skillToRemove.Equals ("no")) {
+					hit.transform.GetComponentInChildren<RobotSkillDisplay> ().ManageDisplays (-1, currentSkill);
+					GameManager.instance.AddCard (skillToRemove);
+				}
+			}
+		
 		}
 	}
 }

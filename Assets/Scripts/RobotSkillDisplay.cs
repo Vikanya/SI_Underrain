@@ -5,7 +5,7 @@ public class RobotSkillDisplay : MonoBehaviour {
 
 	public float tinySpace = .1f;
 
-	GameObject[] quads;
+	List<GameObject> quads = new List<GameObject>();
 
 	int activeDisplays;
 	float quadWidth;
@@ -25,13 +25,13 @@ public class RobotSkillDisplay : MonoBehaviour {
 	void Start(){
 
 		int quadAmount = transform.childCount;
-		quads = new GameObject[quadAmount];
+		//quads = new GameObject[quadAmount];
 		for (int i = 0; i < quadAmount; i++) {
-			quads [i] = transform.GetChild (i).gameObject;
+			quads.Add(transform.GetChild (i).gameObject);
 			quads [i].SetActive (false);
 		}
 
-		quadWidth = quads.Length != 0 ? quads [0].transform.lossyScale.x : 0;
+		quadWidth = quads.Count != 0 ? quads [0].transform.lossyScale.x : 0;
 
 		skillSprite.Add ("Move", moveSprite);
 		skillSprite.Add ("Attack", attackSprite);
@@ -59,14 +59,15 @@ public class RobotSkillDisplay : MonoBehaviour {
 	public void ManageDisplays(int amountAdded, string skillAdded){
 
 		if (amountAdded > 0) {
-			if (activeDisplays + amountAdded > quads.Length) {
+			if (activeDisplays + amountAdded > quads.Count) {
+				Debug.Log ("HAHAH");
 				return;
 			}
 
 			quads [activeDisplays].gameObject.SetActive (true);
 			quads [activeDisplays].GetComponent<SpriteRenderer> ().sprite = skillSprite [skillAdded];
 			activeDisplays += amountAdded;
-			activeDisplays = Mathf.Clamp (activeDisplays, 0, quads.Length);
+			activeDisplays = Mathf.Clamp (activeDisplays, 0, quads.Count);
 
 		} else {
 			if (activeDisplays + amountAdded < 0) {
@@ -83,6 +84,23 @@ public class RobotSkillDisplay : MonoBehaviour {
 
 		for (int i = 0; i < activeDisplays; i++) {
 			quads [i].transform.position = new Vector3 (transform.position.x - totalWidth * .5f + quadWidth * .5f + i * (quadWidth + tinySpace), transform.position.y + 3.5f, transform.position.z);
+		}
+
+	}
+
+	public void HideAllButOne(){
+		quads [0].transform.position = new Vector3 (transform.position.x, transform.position.y + 3.5f, transform.position.z);
+		for (int i = 1; i < quads.Count; i++) {
+			quads [i].SetActive (false);
+		}
+	}
+
+	public void DisplayNextSkill(bool lastOne){
+		quads [0].SetActive (false);
+		quads.RemoveAt (0);
+		if (!lastOne) {
+			quads [0].SetActive (true);
+			quads [0].transform.position = new Vector3 (transform.position.x, transform.position.y + 3.5f, transform.position.z);
 		}
 	}
 }

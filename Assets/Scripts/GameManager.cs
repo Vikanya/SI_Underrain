@@ -51,46 +51,103 @@ public class GameManager : MonoBehaviour {
 		}*/
 	}
 
-	public void ConsumeCard(string cardName){
+	public bool ConsumeCard(string cardName){
 		switch (cardName) {
 		case "Move":
+			if (moveAmount == 0)
+				return false;
 			moveAmount--;
 			cards[0].GetComponentInChildren<Text>().text = "x" + moveAmount;
 			break;
 		case "Attack":
+			if (attackAmount == 0)
+				return false;
 			attackAmount--;
 			cards[1].GetComponentInChildren<Text>().text = "x" + attackAmount;
 			break;
 		case "Interact":
+			if (interactAmount == 0)
+				return false;
 			interactAmount--;
 			cards[2].GetComponentInChildren<Text>().text = "x" + interactAmount;
 			break;
 		case "Hide":
+			if (camoAmount == 0)
+				return false;
 			camoAmount--;
 			cards[3].GetComponentInChildren<Text>().text = "x" + camoAmount;
 			break;
 		case "Distract":
+			if (distractAmount == 0)
+				return false;
 			distractAmount--;
 			cards[4].GetComponentInChildren<Text>().text = "x" + distractAmount;
 			break;
 		case "Mine":
+			if (mineAmount == 0)
+				return false;
 			mineAmount--;
 			cards[5].GetComponentInChildren<Text>().text = "x" + mineAmount;
 			break;
 		case "Back":
+			if (backAmount == 0)
+				return false;
 			backAmount--;
 			cards[6].GetComponentInChildren<Text>().text = "x" + backAmount;
 			break;
 		default:
 			break;
 		}
+		return true;
 	}
+
+	public bool AddCard(string cardName){
+		switch (cardName) {
+		case "Move":
+			moveAmount++;
+			cards[0].GetComponentInChildren<Text>().text = "x" + moveAmount;
+			break;
+		case "Attack":
+			attackAmount++;
+			cards[1].GetComponentInChildren<Text>().text = "x" + attackAmount;
+			break;
+		case "Interact":
+			interactAmount++;
+			cards[2].GetComponentInChildren<Text>().text = "x" + interactAmount;
+			break;
+		case "Hide":
+			camoAmount++;
+			cards[3].GetComponentInChildren<Text>().text = "x" + camoAmount;
+			break;
+		case "Distract":
+			distractAmount++;
+			cards[4].GetComponentInChildren<Text>().text = "x" + distractAmount;
+			break;
+		case "Mine":
+			mineAmount++;
+			cards[5].GetComponentInChildren<Text>().text = "x" + mineAmount;
+			break;
+		case "Back":
+			backAmount++;
+			cards[6].GetComponentInChildren<Text>().text = "x" + backAmount;
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+
 
 	void Update(){
 		if (!actionPhase){
 			if (Input.GetButtonDown ("Next")) {
 				actionPhase = true;
 				cardPanel.gameObject.SetActive (false);
+
+				robot1.GetComponentInChildren<RobotSkillDisplay> ().HideAllButOne ();
+				robot2.GetComponentInChildren<RobotSkillDisplay> ().HideAllButOne ();
+				robot3.GetComponentInChildren<RobotSkillDisplay> ().HideAllButOne ();
+
 			}
 		} else {
 			if (Input.GetButtonDown ("Robot1")) {
