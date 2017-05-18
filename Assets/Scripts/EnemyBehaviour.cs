@@ -27,6 +27,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	bool distracted;
 	public float distractionTime = 3f;
 	float distractionTimer;
+	Quaternion beforeDistractionRotation;
 
 	Vector3 tmpV3;
 	bool gameOver;
@@ -44,11 +45,13 @@ public class EnemyBehaviour : MonoBehaviour {
 	Animator anim;
 
 	void Start () {
-		foreach (Transform child in waypointParent) {
-			waypoints.Add (new Vector3(child.position.x, 0, child.position.z));
-			waypointsTimer.Add (child.localPosition.y);
+		if (!staticEnemy) {
+			foreach (Transform child in waypointParent) {
+				waypoints.Add (new Vector3 (child.position.x, 0, child.position.z));
+				waypointsTimer.Add (child.localPosition.y);
+			}
+			waypointParent.gameObject.SetActive (false);
 		}
-		waypointParent.gameObject.SetActive (false);
 		robots = FindObjectsOfType<RobotPlayer> ();
 
 		fov = GetComponent<FieldOfView> ();
@@ -146,6 +149,8 @@ public class EnemyBehaviour : MonoBehaviour {
 		distractionTimer -= Time.deltaTime;
 		if (distractionTimer <= 0){
 			distracted = false;
+			anim.SetTrigger ("drop");
+			transform.rotation = beforeDistractionRotation;
 		}
 	}
 
@@ -177,7 +182,9 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	public void GetDistracted(Vector3 distractionOrigin){
 		distracted = true;
+		beforeDistractionRotation = transform.rotation;
 		transform.LookAt (distractionOrigin);
+		anim.SetTrigger ("aims");
 		distractionTimer = distractionTime;
 		Debug.Log ("i ma distractend");
 	}

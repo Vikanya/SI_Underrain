@@ -77,10 +77,12 @@ public class RobotPlayer : MonoBehaviour {
 
 	void Update(){
 		// MOVEMENT
-		if (GameManager.instance.actionPhase)
+		if (GameManager.instance.actionPhase){
+			print ("slt");
 			CheckIfShootable ();
+			Distract ();
+		}
 		Move ();
-		Distract ();
 		if (camoOn)
 			Hide ();
 	}
