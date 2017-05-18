@@ -168,6 +168,10 @@ public class GameManager : MonoBehaviour {
         endMission.SetActive(true);
         endMission.GetComponent<EndMission>().loseScreen.SetActive(true);
 	}
+	public void Victory(){
+		Debug.Log ("U WIN");
+		Time.timeScale = 0f;
+	}
 
 	void InitializeDeck(){
 		if (moveAmount == 0){
