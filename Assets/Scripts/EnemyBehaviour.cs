@@ -4,6 +4,8 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour {
 
 	public Transform waypointParent;
+    [SerializeField]
+    GameObject targetIndicator;
 	List<Vector3> waypoints = new List<Vector3>();
 	List<float> waypointsTimer = new List<float>();
 	int waypointIndex;
@@ -59,6 +61,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		visionDotProduct = Mathf.Cos (fov.viewAngle * .5f * Mathf.Deg2Rad );
 
 		anim = GetComponentInChildren<Animator> ();
+        targetIndicator.SetActive(target);
 	}
 	
 	void Update () {
