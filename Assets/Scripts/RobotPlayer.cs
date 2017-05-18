@@ -34,6 +34,8 @@ public class RobotPlayer : MonoBehaviour {
 
 	public GameObject prefabMine;
 
+	public GameObject distractionZone;
+
 	#region temporaire
 	public Material camoMat;
 	Material baseMat;
@@ -43,6 +45,7 @@ public class RobotPlayer : MonoBehaviour {
         GenerateRail();
 		rend = GetComponent<Renderer> ();
 		baseMat = rend.material;
+		distractionZone.transform.localScale = new Vector3 (distractionRange, distractionRange, distractionRange);
 	}
 
 	public void AssignSkill(string skill){
@@ -77,6 +80,7 @@ public class RobotPlayer : MonoBehaviour {
 		if (GameManager.instance.actionPhase)
 			CheckIfShootable ();
 		Move ();
+		Distract ();
 		if (camoOn)
 			Hide ();
 	}
@@ -125,6 +129,9 @@ public class RobotPlayer : MonoBehaviour {
 		}
 	}
 	void Distract(){
+		if(skillList.Count > 0 && skillList[0] == "Distract") {
+			distractionZone.SetActive (true);
+		}
 	}
 	public void NextSkill(){
 		if (skillList.Count == 0){
@@ -237,6 +244,7 @@ public class RobotPlayer : MonoBehaviour {
 		for (int a = 0; a < enemiesInRange.Length; a++) {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}
+		distractionZone.SetActive (false);
 	}
 	void TriggerMine(){
 		Instantiate (prefabMine, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
