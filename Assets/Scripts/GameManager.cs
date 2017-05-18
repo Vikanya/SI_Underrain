@@ -165,9 +165,9 @@ public class GameManager : MonoBehaviour {
 	public void GameOver(){
 		Debug.Log ("GAMEOVER");
 		Time.timeScale = 0f;
+        endMission.SetActive(true);
+        endMission.GetComponent<EndMission>().loseScreen.SetActive(true);
 	}
-
-
 
 	void InitializeDeck(){
 		if (moveAmount == 0){

@@ -13,7 +13,7 @@ public class EndMission : MonoBehaviour {
         loseScreen.SetActive(false);
         gameObject.SetActive(false);
     }
-
+    
     public void Retry() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
