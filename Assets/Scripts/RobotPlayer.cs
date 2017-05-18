@@ -36,6 +36,8 @@ public class RobotPlayer : MonoBehaviour {
 
 	public GameObject distractionZone;
 
+    Animator animator;
+
 	#region temporaire
 	public Material camoMat;
 	Material baseMat;
@@ -46,6 +48,7 @@ public class RobotPlayer : MonoBehaviour {
 		rend = GetComponent<Renderer> ();
 		baseMat = rend.material;
 		distractionZone.transform.localScale = new Vector3 (distractionRange*2, distractionRange*2, distractionRange*2);
+        animator = GetComponentInChildren<Animator>();
 	}
 
 	public void AssignSkill(string skill){
@@ -73,6 +76,7 @@ public class RobotPlayer : MonoBehaviour {
             rail.SetPosition(i, waypoints[i]);
         }
         waypointParent.SetParent(null, true);
+        transform.LookAt(waypoints[waypointIndex + 1]);
     }
 
 	void Update(){
@@ -91,14 +95,19 @@ public class RobotPlayer : MonoBehaviour {
 
 				moveAmount = Time.deltaTime * speed;
 				totalMoved += moveAmount;
-                print("en train de bouger");
 				transform.Translate (moveDir * moveAmount, Space.World);
+
+                if (!animator.GetBool("Walk"))
+                    animator.SetBool("Walk", true);
+                
 			} else {
 				if (waypointIndex>0 && waypointsObjects [waypointIndex-1].localScale.x == 0) {
 					
 					TriggerMove ();
-				} else{
-					ready = true;
+				} else {
+                    if (animator.GetBool("Walk"))
+                        animator.SetBool("Walk", false);
+                    ready = true;
 				}
 			}
 	}
@@ -115,12 +124,14 @@ public class RobotPlayer : MonoBehaviour {
 			}
 		}
 		if (currTarget) {
+            transform.LookAt(currTarget.transform);
 			try {
 				currTarget.GetComponent<EnemyBehaviour> ().Shot ();
 			} catch (System.Exception ex) {
 				currTarget.GetComponent<Shootable> ().Shot ();
-			}
-		}
+            }
+            animator.SetTrigger("Fire");
+        }
 
 	}
 	void Hide(){
@@ -216,6 +227,7 @@ public class RobotPlayer : MonoBehaviour {
 		if (waypointIndex >= waypoints.Count - 1)
 			return;
         print("trigger move");
+        transform.LookAt(waypoints[waypointIndex + 1]);
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -235,8 +247,9 @@ public class RobotPlayer : MonoBehaviour {
 		}
 		if (currTarget) {
 			currTarget.GetComponent<Terminal> ().Activate ();
-		}
-	}
+        }
+        animator.SetTrigger("Interaction");
+    }
 	void TriggerHide(){
 		rend.material = camoMat;
 		camoOn = true;
@@ -249,7 +262,8 @@ public class RobotPlayer : MonoBehaviour {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}
 		distractionZone.SetActive (false);
-	}
+        animator.SetTrigger("Interaction");
+    }
 	void TriggerMine(){
 		Instantiate (prefabMine, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
 	}
