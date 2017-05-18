@@ -199,8 +199,14 @@ public class EnemyBehaviour : MonoBehaviour {
 		fov.viewMeshFilter.gameObject.SetActive(false);
 		this.enabled = false;
 		if (target)
-			GameManager.instance.Victory ();
+			Invoke ("DelayedVictory", 2);
 		//gameObject.SetActive (false);
+	}
+
+
+	public void DelayedVictory()
+	{
+		GameManager.instance.Victory ();
 	}
 }
 

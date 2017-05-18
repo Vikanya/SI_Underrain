@@ -43,8 +43,6 @@ public class GameManager : MonoBehaviour {
 	float cardWidth;
 	int cardNumber;
 
-	[Header("Cursor Textures")]
-	public List <Texture2D> cursorTextures = new List<Texture2D> ();
 
 	void Awake(){
 		instance = this;
