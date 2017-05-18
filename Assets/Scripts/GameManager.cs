@@ -164,7 +164,10 @@ public class GameManager : MonoBehaviour {
 		Debug.Log ("GAMEOVER");
 		Time.timeScale = 0f;
 	}
-
+	public void Victory(){
+		Debug.Log ("U WIN");
+		Time.timeScale = 0f;
+	}
 
 
 	void InitializeDeck(){

@@ -197,7 +197,6 @@ public class RobotPlayer : MonoBehaviour {
 	void TriggerMove(){
 		if (waypointIndex >= waypoints.Count - 1)
 			return;
-		
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -244,5 +243,16 @@ public class RobotPlayer : MonoBehaviour {
 		moveDist = moveDir.magnitude;
 		moveDir = moveDir.normalized;
 		waypointIndex--;
+	}
+
+	public void HideInDarkness(bool hidden){
+		
+		gameObject.layer = LayerMask.NameToLayer (hidden ? "Enemy" : "Robot");
+
+		if(hidden){
+			Debug.Log ("CANT SEE ME");
+		} else {
+			Debug.Log("OH NOES YOU SEEZ");
+		}
 	}
 }
