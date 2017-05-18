@@ -40,7 +40,6 @@ public class EnemyBehaviour : MonoBehaviour {
 	private FieldOfView fov;
 	public DetectionFeedback detectionFeedback;
 
-
 	//ANim
 	Animator anim;
 
