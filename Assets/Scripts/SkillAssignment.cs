@@ -42,7 +42,6 @@ public class SkillAssignment : MonoBehaviour {
 		}
 
 		if (Input.GetButtonDown ("Fire2")) {
-			Debug.Log ("clic droit " + name);
 			rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
 			if (Physics.Raycast (rayToMousePoint, out hit, float.MaxValue, layerRobot)) {
 				string skillToRemove = hit.transform.GetComponent<RobotPlayer> ().RemoveSkill ();

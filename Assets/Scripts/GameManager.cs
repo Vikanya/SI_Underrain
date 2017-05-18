@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour {
 
 	void Update(){
 		if (!actionPhase){
-			if (Input.GetButtonDown ("Next")) {
+			if (Input.GetButtonDown ("Next") && Time.timeScale>0) {
 				actionPhase = true;
 				cardPanel.gameObject.SetActive (false);
 
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour {
 
 			}
 		} else {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+			if (Input.GetKeyDown(KeyCode.Escape)) {
                 Pause(!isPaused);
             }
 			if (Input.GetButtonDown ("Robot1")) {
