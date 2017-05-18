@@ -241,7 +241,7 @@ public class RobotPlayer : MonoBehaviour {
 		rend.material = camoMat;
 		camoOn = true;
 		hiddenTimer = camouflageTime;
-		gameObject.layer = LayerMask.NameToLayer ("Enemy");
+		gameObject.layer = LayerMask.NameToLayer ("Invisible");
 	}
 	void TriggerDistract(){
 		Collider[] enemiesInRange = Physics.OverlapSphere (transform.position, distractionRange, layerEnemy);
@@ -267,7 +267,7 @@ public class RobotPlayer : MonoBehaviour {
 
 	public void HideInDarkness(bool hidden){
 		
-		gameObject.layer = LayerMask.NameToLayer (hidden ? "Enemy" : "Robot");
+		gameObject.layer = LayerMask.NameToLayer (hidden ? "Invisible" : "Robot");
 
 		if(hidden){
 			Debug.Log ("CANT SEE ME");
