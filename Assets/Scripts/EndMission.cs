@@ -5,15 +5,20 @@ public class EndMission : MonoBehaviour {
 
     [SerializeField]
     SceneField titleScreen;
-    public GameObject winScreen, loseScreen;
+    public GameObject pauseScreen, winScreen, loseScreen;
 
     void Start() {
-        GameManager.instance.endMission = gameObject;
+        GameManager.instance.endMissionObject = gameObject;
         winScreen.SetActive(false);
         loseScreen.SetActive(false);
+        pauseScreen.SetActive(false);
         gameObject.SetActive(false);
     }
     
+    public void Return() {
+        GameManager.instance.Pause(false);
+    }
+
     public void Retry() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

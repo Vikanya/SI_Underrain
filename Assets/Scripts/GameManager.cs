@@ -29,7 +29,15 @@ public class GameManager : MonoBehaviour {
 
 	public bool actionPhase;
 
-    public GameObject endMission;
+    GameObject _endMissionObject;
+    EndMission endMission;
+    public GameObject endMissionObject {
+        get { return _endMissionObject; }
+        set {
+            _endMissionObject = value;
+            endMission = _endMissionObject.GetComponent<EndMission>();
+        }
+    }
 
 	float cardWidth;
 	int cardNumber;
@@ -150,6 +158,9 @@ public class GameManager : MonoBehaviour {
 
 			}
 		} else {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Pause(!isPaused);
+            }
 			if (Input.GetButtonDown ("Robot1")) {
 				robot1.NextSkill ();
 			}
@@ -162,16 +173,23 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+    bool isPaused;
+    public void Pause(bool value) {
+        isPaused = value;
+        Time.timeScale = value ? 0f : 1f;
+        endMissionObject.SetActive(value);
+        endMission.pauseScreen.SetActive(value);
+    }
 	public void GameOver(){
-		Debug.Log ("GAMEOVER");
 		Time.timeScale = 0f;
-        endMission.SetActive(true);
-        endMission.GetComponent<EndMission>().loseScreen.SetActive(true);
+        endMissionObject.SetActive(true);
+        endMission.loseScreen.SetActive(true);
 	}
 	public void Victory(){
-		Debug.Log ("U WIN");
 		Time.timeScale = 0f;
-	}
+        endMissionObject.SetActive(true);
+        endMission.winScreen.SetActive(true);
+    }
 
 	void InitializeDeck(){
 		if (moveAmount == 0){
