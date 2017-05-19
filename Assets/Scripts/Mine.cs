@@ -20,7 +20,7 @@ public class Mine : MonoBehaviour {
 		enemiesInRange = Physics.OverlapSphere (transform.position, range, layerEnemy);
 		
 		if (enemiesInRange.Length != 0){
-			enemiesInRange [0].GetComponent<EnemyBehaviour> ().Shot ();
+			enemiesInRange [0].GetComponent<EnemyBehaviour> ().Shot (Vector3.zero, true);
 			AudioSource.PlayClipAtPoint (explosionSFX, transform.position, 1.5f);
 			gameObject.SetActive (false);
 		}

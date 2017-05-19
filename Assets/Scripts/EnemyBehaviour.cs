@@ -45,6 +45,8 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	public AudioClip shootingSFX;
 
+	public ParticleSystem bloodSplat;
+
 	//ANim
 	Animator anim;
 
@@ -196,9 +198,13 @@ public class EnemyBehaviour : MonoBehaviour {
 		Debug.Log ("i ma distractend");
 	}
 
-	public void Shot(){
+	public void Shot(Vector3 robotPos, bool isMine){
 		//Debug.Log ("I AM DEAD");
-
+		if (!isMine) {
+			ParticleSystem blood = Instantiate (bloodSplat, transform.position + transform.up, Quaternion.identity);
+			Destroy (blood, 2f);
+			blood.transform.rotation = Quaternion.LookRotation ((transform.position + transform.up) - robotPos);
+		}
 		anim.SetTrigger ("dies");
 		gameObject.layer = LayerMask.NameToLayer ("Default");
 		detectionFeedback.gameObject.SetActive (false);
