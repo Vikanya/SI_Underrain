@@ -46,6 +46,27 @@ public class ActivableObject : MonoBehaviour {
 		doorActiv.SetState (state);
 	}
 
+	void OnValidate(){
+
+		blueDoor.SetActive (false);
+		redDoor.SetActive(false);
+		yellowDoor.SetActive(false);
+		switch (doorColor) {
+		case DoorColor.Blue:
+			blueDoor.SetActive (true);
+			break;
+		case DoorColor.Red:
+			redDoor.SetActive(true);
+			break;
+		case DoorColor.Yellow:
+			yellowDoor.SetActive(true);
+			break;
+		default:
+			blueDoor.SetActive(true);
+			break;
+		}
+	}
+
 	public enum DoorColor
 	{
 		Blue,
