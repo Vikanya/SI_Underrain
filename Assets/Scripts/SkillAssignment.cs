@@ -78,7 +78,10 @@ public class SkillAssignment : MonoBehaviour {
 				currentSkill = null;
 			}
 		}
-
+		if (Input.GetButtonUp ("Fire2")) {
+			Cursor.SetCursor (null, Vector2.zero, CursorMode.Auto);
+			currentSkill = null;
+		}
 		if (Input.GetButtonDown ("Fire2")) {
 			rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
 			if (Physics.Raycast (rayToMousePoint, out hit, float.MaxValue, layerRobot)) {
