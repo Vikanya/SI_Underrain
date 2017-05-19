@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour {
 	float cardWidth;
 	int cardNumber;
 
+	RaycastHit hit;
+	Ray rayToMousePoint;
+	public LayerMask layerRobot;
 
 	void Awake(){
 		instance = this;
@@ -173,6 +176,13 @@ public class GameManager : MonoBehaviour {
 			if (Input.GetButtonDown ("Robot3")) {
 				robot3.NextSkill ();
             }
+			if (Input.GetButtonDown("Fire1")){
+				Debug.Log ("clic");
+				rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
+				if (Physics.Raycast(rayToMousePoint, out hit, float.MaxValue, layerRobot)){
+					hit.transform.GetComponent<RobotPlayer> ().NextSkill ();
+				}
+			}
 		}
 	}
 
