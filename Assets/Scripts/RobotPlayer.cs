@@ -41,6 +41,12 @@ public class RobotPlayer : MonoBehaviour {
 	bool rotationOverride = false;
 	Transform lookAtTarget;
 
+
+	public AudioClip stealthSFX;
+	public AudioClip interactSFX;
+	public AudioClip attackSFX;
+	public AudioClip distractionSFX;
+
 	#region temporaire
 	public Material camoMat;
 	Material baseMat;
@@ -139,6 +145,7 @@ public class RobotPlayer : MonoBehaviour {
 			} catch (System.Exception ex) {
 				currTarget.GetComponent<Shootable> ().Shot ();
 			}
+			AudioSource.PlayClipAtPoint (attackSFX, transform.position, 1.5f);
 		}
 
 	}
@@ -257,6 +264,7 @@ public class RobotPlayer : MonoBehaviour {
 		}
 		if (currTarget) {
 			currTarget.GetComponent<Terminal> ().Activate ();
+			AudioSource.PlayClipAtPoint (interactSFX, transform.position,1.5f);
 		}
 		anim.SetTrigger ("Interaction");
 	}
@@ -265,6 +273,7 @@ public class RobotPlayer : MonoBehaviour {
 		camoOn = true;
 		hiddenTimer = camouflageTime;
 		gameObject.layer = LayerMask.NameToLayer ("Invisible");
+		AudioSource.PlayClipAtPoint (stealthSFX, transform.position,1.5f);
 	}
 	void TriggerDistract(){
 		Collider[] enemiesInRange = Physics.OverlapSphere (transform.position, distractionRange, layerEnemy);
@@ -272,6 +281,7 @@ public class RobotPlayer : MonoBehaviour {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}
 		distractionZone.SetActive (false);
+		AudioSource.PlayClipAtPoint (distractionSFX, transform.position, 1.5f);
 		anim.SetTrigger ("Interaction");
 	}
 	void TriggerMine(){

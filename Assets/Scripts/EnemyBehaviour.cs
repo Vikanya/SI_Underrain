@@ -43,6 +43,8 @@ public class EnemyBehaviour : MonoBehaviour {
 	private FieldOfView fov;
 	public DetectionFeedback detectionFeedback;
 
+	public AudioClip shootingSFX;
+
 	//ANim
 	Animator anim;
 
@@ -134,6 +136,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		if (detectionTimer <= 0f){
 			anim.SetBool ("firing", true);
 			gameOver = true;
+			AudioSource.PlayClipAtPoint (shootingSFX, transform.position, 1.2f);
 			playerDetected.Die ();
 			Invoke ("DelayedGameOver", 2);
 

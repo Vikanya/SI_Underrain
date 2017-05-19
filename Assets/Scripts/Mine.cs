@@ -9,6 +9,8 @@ public class Mine : MonoBehaviour {
 
 	Collider[] enemiesInRange;
 
+	public AudioClip explosionSFX;
+
 	void Start(){
 		rangeObject.transform.localScale = new Vector3 (range, range, range);
 	}
@@ -19,6 +21,7 @@ public class Mine : MonoBehaviour {
 		
 		if (enemiesInRange.Length != 0){
 			enemiesInRange [0].GetComponent<EnemyBehaviour> ().Shot ();
+			AudioSource.PlayClipAtPoint (explosionSFX, transform.position, 1.5f);
 			gameObject.SetActive (false);
 		}
 

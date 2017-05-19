@@ -11,11 +11,14 @@ public class Shootable : MonoBehaviour {
 
 	public Transform lightZoneOrigin;
 
+	public AudioClip lightsOffSFX;
+
 	List<RobotPlayer> currentRobots = new List<RobotPlayer>();
 	List<RobotPlayer> previousRobots = new List<RobotPlayer>();
 
 	public void Shot(){
 		Debug.Log ("I AM DESTRYED " + name);
+		AudioSource.PlayClipAtPoint (lightsOffSFX, transform.position, 1.5f);
 		triggeredObject.SetActive (false);
 		objectActive = false;
 	} 
