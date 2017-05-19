@@ -25,7 +25,7 @@ public class RobotPlayer : MonoBehaviour {
 	float totalMoved;
 
 	GameObject currTarget;
-	Renderer rend;
+	Renderer[] renderers;
 
 	public LayerMask layerShootable;
 	public LayerMask layerEnemy;
@@ -54,8 +54,8 @@ public class RobotPlayer : MonoBehaviour {
 
 	void Start(){
         GenerateRail();
-		rend = GetComponent<Renderer> ();
-		baseMat = rend.material;
+		renderers = GetComponentsInChildren<Renderer>();
+		baseMat = renderers[renderers.Length-1].material;
 		distractionZone.transform.localScale = new Vector3 (distractionRange*2, distractionRange*2, distractionRange*2);
 		anim = GetComponentInChildren<Animator> ();
 	}
@@ -153,7 +153,9 @@ public class RobotPlayer : MonoBehaviour {
 	void Hide(){
 		hiddenTimer -= Time.deltaTime;
 		if (hiddenTimer <= 0) {
-			rend.material = baseMat;
+            foreach(Renderer rend in renderers) {
+                rend.material = baseMat;
+            }
 			camoOn = false;
 			gameObject.layer = LayerMask.NameToLayer ("Robot");
 		}
@@ -269,8 +271,10 @@ public class RobotPlayer : MonoBehaviour {
 		}
 		anim.SetTrigger ("Interaction");
 	}
-	void TriggerHide(){
-		rend.material = camoMat;
+	void TriggerHide() {
+        foreach (Renderer rend in renderers) {
+            rend.material = camoMat;
+        }
 		camoOn = true;
 		hiddenTimer = camouflageTime;
 		gameObject.layer = LayerMask.NameToLayer ("Invisible");
