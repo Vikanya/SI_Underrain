@@ -141,8 +141,9 @@ public class RobotPlayer : MonoBehaviour {
 			rotationOverride = true;
 			lookAtTarget = currTarget.transform;
 			try {
-				currTarget.GetComponent<EnemyBehaviour> ().Shot ();
+				currTarget.GetComponent<EnemyBehaviour> ().Shot (transform.position, false);
 			} catch (System.Exception ex) {
+				Debug.LogError (ex);
 				currTarget.GetComponent<Shootable> ().Shot ();
 			}
 			AudioSource.PlayClipAtPoint (attackSFX, transform.position, 1.5f);
