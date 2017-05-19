@@ -1,12 +1,14 @@
 fileFormatVersion: 2
 guid: c383508baff6f78449d21141245d27a1
-timeCreated: 1495128455
+timeCreated: 1495181777
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: T_UI_Various_0
     21300002: T_UI_Various_1
     21300004: T_UI_Various_2
+    21300006: T_UI_Various_3
+    21300008: T_UI_Various_4
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -106,6 +108,32 @@ TextureImporter:
         y: 941
         width: 479
         height: 383
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_UI_Various_3
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 795
+        width: 301
+        height: 403
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_UI_Various_4
+      rect:
+        serializedVersion: 2
+        x: 1413
+        y: 796
+        width: 296
+        height: 402
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
