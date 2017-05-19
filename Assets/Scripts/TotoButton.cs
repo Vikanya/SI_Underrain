@@ -12,7 +12,6 @@ public class TotoButton : MonoBehaviour {
 
 	public void ChangeAccessory()
 	{
-		Debug.Log ("coolbutton");
 		anim.SetTrigger ("Interaction");
 
 		accessories [index].SetActive (false);
