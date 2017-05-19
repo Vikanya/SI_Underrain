@@ -134,7 +134,8 @@ public class EnemyBehaviour : MonoBehaviour {
 		if (detectionTimer <= 0f){
 			anim.SetBool ("firing", true);
 			gameOver = true;
-			GameManager.instance.GameOver();
+			playerDetected.Die ();
+			Invoke ("DelayedGameOver", 2);
 
 		}
 		transform.LookAt (playerDetected.transform);
@@ -202,8 +203,19 @@ public class EnemyBehaviour : MonoBehaviour {
 		fov.viewMeshFilter.gameObject.SetActive(false);
 		this.enabled = false;
 		if (target)
-			GameManager.instance.Victory ();
+			Invoke ("DelayedVictory", 2);
 		//gameObject.SetActive (false);
+	}
+
+
+	public void DelayedVictory()
+	{
+		GameManager.instance.Victory ();
+	}
+
+	public void DelayedGameOver()
+	{
+		GameManager.instance.GameOver ();
 	}
 }
 

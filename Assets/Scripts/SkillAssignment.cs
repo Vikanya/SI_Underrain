@@ -18,7 +18,7 @@ public class SkillAssignment : MonoBehaviour {
 		currentSkill = skill;
 	}
 	public void SetCursorTexture(Texture2D tex){
-		Cursor.SetCursor(tex,Vector2.zero,CursorMode.Auto);
+		Cursor.SetCursor(tex,new Vector2(tex.width/2,tex.height/2),CursorMode.Auto);
 	}
 	void Awake(){
 		instance = this;
@@ -28,6 +28,7 @@ public class SkillAssignment : MonoBehaviour {
 
 		if (Input.GetButtonUp ("Fire1")) {
 			if (currentSkill != null){
+				Cursor.SetCursor (null, Vector2.zero, CursorMode.Auto);
 				rayToMousePoint = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast(rayToMousePoint, out hit, float.MaxValue, layerRobot)){
 					if (GameManager.instance.ConsumeCard (currentSkill)) {

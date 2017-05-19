@@ -36,7 +36,10 @@ public class RobotPlayer : MonoBehaviour {
 
 	public GameObject distractionZone;
 
-    Animator animator;
+	Animator anim;
+	public Transform turret;
+	bool rotationOverride = false;
+	Transform lookAtTarget;
 
 	#region temporaire
 	public Material camoMat;
@@ -48,7 +51,7 @@ public class RobotPlayer : MonoBehaviour {
 		rend = GetComponent<Renderer> ();
 		baseMat = rend.material;
 		distractionZone.transform.localScale = new Vector3 (distractionRange*2, distractionRange*2, distractionRange*2);
-        animator = GetComponentInChildren<Animator>();
+		anim = GetComponentInChildren<Animator> ();
 	}
 
 	public void AssignSkill(string skill){
@@ -76,7 +79,6 @@ public class RobotPlayer : MonoBehaviour {
             rail.SetPosition(i, waypoints[i]);
         }
         waypointParent.SetParent(null, true);
-        transform.LookAt(waypoints[waypointIndex + 1]);
     }
 
 	void Update(){
@@ -90,26 +92,31 @@ public class RobotPlayer : MonoBehaviour {
 		if (camoOn)
 			Hide ();
 	}
+
+	void LateUpdate()
+	{
+		if(rotationOverride)
+		{
+			turret.LookAt (new Vector3(lookAtTarget.position.x,turret.position.y,lookAtTarget.position.z));
+			turret.RotateAround (turret.right, -90);
+		}
+	}
 	void Move(){
-			if (totalMoved - moveDist < 0) {
-
-				moveAmount = Time.deltaTime * speed;
-				totalMoved += moveAmount;
-				transform.Translate (moveDir * moveAmount, Space.World);
-
-                if (!animator.GetBool("Walk"))
-                    animator.SetBool("Walk", true);
-                
-			} else {
-				if (waypointIndex>0 && waypointsObjects [waypointIndex-1].localScale.x == 0) {
-					
-					TriggerMove ();
-				} else {
-                    if (animator.GetBool("Walk"))
-                        animator.SetBool("Walk", false);
-                    ready = true;
-				}
+		if (totalMoved - moveDist < 0) {
+			anim.SetBool ("Walk", true);
+			moveAmount = Time.deltaTime * speed;
+			totalMoved += moveAmount;
+            print("en train de bouger");
+			transform.Translate (moveDir * moveAmount, Space.World);
+		} else {
+			anim.SetBool ("Walk", false);
+			if (waypointIndex>0 && waypointsObjects [waypointIndex-1].localScale.x == 0) {
+				
+				TriggerMove ();
+			} else{
+				ready = true;
 			}
+		}
 	}
 	void Attack(){
 		currTarget = null;
@@ -124,14 +131,15 @@ public class RobotPlayer : MonoBehaviour {
 			}
 		}
 		if (currTarget) {
-            transform.LookAt(currTarget.transform);
+			anim.SetTrigger ("Fire");
+			rotationOverride = true;
+			lookAtTarget = currTarget.transform;
 			try {
 				currTarget.GetComponent<EnemyBehaviour> ().Shot ();
 			} catch (System.Exception ex) {
 				currTarget.GetComponent<Shootable> ().Shot ();
-            }
-            animator.SetTrigger("Fire");
-        }
+			}
+		}
 
 	}
 	void Hide(){
@@ -149,7 +157,7 @@ public class RobotPlayer : MonoBehaviour {
 	}
 	public void NextSkill(){
 		if (skillList.Count == 0){
-			Debug.Log ("list = 0");
+			//Debug.Log ("list = 0");
 			return;
 		}
 		if (!ready && !skillList [0].Equals ("Hide") && !skillList [0].Equals ("Distract") && !skillList [0].Equals ("Mine")) { 
@@ -163,6 +171,8 @@ public class RobotPlayer : MonoBehaviour {
 	}
 	bool ExecuteSkill(string skill){
 		ready = false;
+		rotationOverride = false;
+		turret.rotation = Quaternion.identity;
 		switch (skill) {
 		case "Attack":
 			TriggerAttack ();
@@ -226,8 +236,8 @@ public class RobotPlayer : MonoBehaviour {
 	void TriggerMove(){
 		if (waypointIndex >= waypoints.Count - 1)
 			return;
-        print("trigger move");
-        transform.LookAt(waypoints[waypointIndex + 1]);
+        
+		transform.LookAt (waypoints [waypointIndex + 1]);
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex + 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -247,9 +257,9 @@ public class RobotPlayer : MonoBehaviour {
 		}
 		if (currTarget) {
 			currTarget.GetComponent<Terminal> ().Activate ();
-        }
-        animator.SetTrigger("Interaction");
-    }
+		}
+		anim.SetTrigger ("Interaction");
+	}
 	void TriggerHide(){
 		rend.material = camoMat;
 		camoOn = true;
@@ -262,16 +272,17 @@ public class RobotPlayer : MonoBehaviour {
 			enemiesInRange [a].GetComponent<EnemyBehaviour> ().GetDistracted (transform.position);
 		}
 		distractionZone.SetActive (false);
-        animator.SetTrigger("Interaction");
-    }
+		anim.SetTrigger ("Interaction");
+	}
 	void TriggerMine(){
 		Instantiate (prefabMine, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+		anim.SetTrigger ("Interaction");
 	}
 	void TriggerBack(){
 		if (waypointIndex <= 0)
 			return;
 
-		Debug.Log (waypointIndex);
+		transform.LookAt (waypoints [waypointIndex - 1]);
 		totalMoved = 0;
 		moveDir = (waypoints [waypointIndex - 1] - waypoints [waypointIndex]);
 		moveDist = moveDir.magnitude;
@@ -336,5 +347,10 @@ public class RobotPlayer : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	public void Die()
+	{
+		anim.SetTrigger ("Death");
 	}
 }
